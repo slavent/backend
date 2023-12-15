@@ -3,16 +3,20 @@ import { UsersModule } from "./users/users.module"
 import { TasksModule } from "./tasks/tasks.module"
 import { CommentsModule } from "./comments/comments.module"
 import { SequelizeModule } from "@nestjs/sequelize"
+import { ConfigModule } from "@nestjs/config"
 
 @Module( {
     imports: [
+        ConfigModule.forRoot( {
+            envFilePath: ".env"
+        } ),
         SequelizeModule.forRoot( {
             dialect: "postgres",
-            host: "localhost",
-            port: 5432,
-            username: "postgres",
-            password: "root",
-            database: "todolist",
+            host: process.env.HOST,
+            port: +process.env.PORT,
+            username: process.env.DB_USERNAME,
+            password: process.env.DB_PASSWORD,
+            database: process.env.DB_NAME,
             models: [],
             autoLoadModels: true
         } ),
