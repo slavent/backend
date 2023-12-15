@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post } from "@nestjs/common"
 import { TasksService } from "./tasks.service"
-import { ITask } from "./ITask"
 import { CreateTaskDto } from "./CreateTaskDto"
+import { Task } from "./tasks.model"
 
 @Controller( "/tasks" )
 export class TasksController {
@@ -9,12 +9,12 @@ export class TasksController {
     }
 
     @Get( ":id" )
-    getTask( @Param( "id" ) id: string ): ITask {
+    getTask( @Param( "id" ) id: string ): Promise<Task> {
         return this.tasksService.getTask( id )
     }
 
     @Get()
-    getTasks(): ITask[] {
+    getTasks(): Promise<Task[]> {
         return this.tasksService.getTasks()
     }
 

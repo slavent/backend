@@ -1,37 +1,26 @@
 import { Injectable } from "@nestjs/common"
 import { CreateTaskDto } from "./CreateTaskDto"
-import { ITask } from "./ITask"
+import { Task } from "./tasks.model"
+import { InjectModel } from "@nestjs/sequelize"
 
 @Injectable()
 export class TasksService {
-    getTask( taskId: string): ITask {
-        return {
-            title: "test",
-            description: "test",
-            created: "test"
-        }
+    constructor( @InjectModel( Task ) private taskRepo: typeof Task ) {
     }
 
-    getTasks(): ITask[] {
-        return [
-            {
-                title: "test",
-                description: "test",
-                created: "test"
-            },
-            {
-                title: "test",
-                description: "test",
-                created: "test"
-            }
-        ]
+    async getTask( taskId: string ): Promise<Task> {
+        return await this.taskRepo.findByPk( taskId )
     }
 
-    createTask( task: CreateTaskDto ) {
-        console.log(task)
+    async getTasks(): Promise<Task[]> {
+        return await this.taskRepo.findAll()
     }
 
-    removeTask( taskId: string ) {
-        console.log(taskId)
+    async createTask( dto: CreateTaskDto ) {
+        return await this.taskRepo.create( dto )
+    }
+
+    async removeTask( taskId: string ) {
+        return await this.taskRepo.destroy( { where: { id: taskId } } )
     }
 }
