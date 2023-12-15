@@ -9,22 +9,22 @@ export class TasksController {
     }
 
     @Get( ":id" )
-    getUser( @Param( "id" ) id: string ): ITask {
+    getTask( @Param( "id" ) id: string ): ITask {
         return this.tasksService.getTask( id )
     }
 
     @Get()
-    getUsers(): ITask[] {
+    getTasks(): ITask[] {
         return this.tasksService.getTasks()
     }
 
     @Post()
-    createUser( @Body() createTaskDto: CreateTaskDto ) {
+    createTask( @Body() createTaskDto: CreateTaskDto ) {
         return this.tasksService.createTask( createTaskDto )
     }
 
     @Delete( ":id" )
-    removeUser( @Param( "id" ) id: string ) {
+    removeTask( @Param( "id" ) id: string ) {
         return this.tasksService.removeTask( id )
     }
 }
