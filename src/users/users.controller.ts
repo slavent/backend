@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, Param, Post } from "@nestjs/common"
 import { UsersService } from "./users.service"
 import { IUser } from "./IUser"
 import { CreateUserDto } from "./CreateUserDto"
+import { User } from "./users.model"
 
 @Controller( "/users" )
 export class UsersController {
@@ -9,12 +10,12 @@ export class UsersController {
     }
 
     @Get( ":id" )
-    getUser( @Param( "id" ) id: string ): IUser {
+    getUser( @Param( "id" ) id: string ): Promise<User> {
         return this.usersService.getUser( id )
     }
 
     @Get()
-    getUsers(): IUser[] {
+    getUsers(): Promise<User[]> {
         return this.usersService.getUsers()
     }
 

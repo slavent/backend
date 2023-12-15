@@ -1,34 +1,30 @@
 import { Injectable } from "@nestjs/common"
-import { IUser } from "./IUser"
 import { CreateUserDto } from "./CreateUserDto"
+import { InjectModel } from "@nestjs/sequelize"
+import { User } from "./users.model"
 
 @Injectable()
 export class UsersService {
-    getUser(userId: string): IUser {
-        return {
-            name: "test",
-            login: "test"
-        }
+    constructor( @InjectModel( User ) private userRepo: typeof User ) {
     }
 
-    getUsers(): IUser[] {
-        return [
-            {
-                name: "test",
-                login: "test"
-            },
-            {
-                name: "test",
-                login: "test"
+    async getUser( userId: string ): Promise<User> {
+        return await this.userRepo.findByPk( userId )
+    }
+
+    async getUsers(): Promise<User[]> {
+        return await this.userRepo.findAll()
+    }
+
+    async createUser( dto: CreateUserDto ) {
+        return await this.userRepo.create( dto )
+    }
+
+    async removeUser( userId: string ) {
+        return await this.userRepo.destroy( {
+            where: {
+                id: userId
             }
-        ]
-    }
-
-    createUser( user: CreateUserDto ) {
-        console.log(user)
-    }
-
-    removeUser( userId: string ) {
-        console.log(userId)
+        } )
     }
 }
